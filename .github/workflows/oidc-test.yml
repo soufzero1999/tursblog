@@ -1,0 +1,25 @@
+name: OIDC Test
+
+on:
+  workflow_dispatch:  # allows manual trigger
+
+permissions:
+  id-token: write      # required for OIDC
+  contents: read
+
+jobs:
+  test-oidc:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::<YOUR_AWS_ACCOUNT_ID>:role/<ROLE_NAME>
+          aws-region: us-east-1
+
+      - name: Show caller identity
+        run: aws sts get-caller-identity
