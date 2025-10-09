@@ -25,13 +25,24 @@ jobs:
       - name: Show caller identity
         run: aws sts get-caller-identity
 
-      - name: Print AWS temporary credentials
+      - name: List S3 buckets
+        run: aws s3 ls
+
+      - name: Save temporary AWS credentials to JSON
         run: |
-          echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
-          echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
-          echo "AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}"
-          echo ""
-          echo "🔑 To use from CLI, run:"
-          echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
-          echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
-          echo "export AWS_SESSION_TOKEN='${AWS_SESSION_TOKEN}'"
+          mkdir -p creds
+          cat <<EOF > creds/aws-oidc-creds.json
+          {
+            "AccessKeyId": "${AWS_ACCESS_KEY_ID}",
+            "SecretAccessKey": "${AWS_SECRET_ACCESS_KEY}",
+            "SessionToken": "${AWS_SESSION_TOKEN}",
+            "Region": "us-east-1",
+            "Expiration": "$(date -u -d '+15 minutes' +'%Y-%m-%dT%H:%M:%SZ')"
+          }
+          EOF
+
+      - name: Upload credentials as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aws-oidc-creds
+          path: creds/aws-oidc-creds.json
