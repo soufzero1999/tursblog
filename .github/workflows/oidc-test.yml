@@ -1,10 +1,10 @@
 name: OIDC Test
 
 on:
-  workflow_dispatch:  # allows manual trigger
+  workflow_dispatch: # allows manual trigger
 
 permissions:
-  id-token: write      # required for OIDC
+  id-token: write  # required for OIDC
   contents: read
 
 jobs:
@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
+        id: aws_creds
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::306442480424:role/e2esa-aws-terraform-github-oidc
@@ -23,3 +24,14 @@ jobs:
 
       - name: Show caller identity
         run: aws sts get-caller-identity
+
+      - name: Print AWS temporary credentials
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+          echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
+          echo "AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}"
+          echo ""
+          echo "🔑 To use from CLI, run:"
+          echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+          echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
+          echo "export AWS_SESSION_TOKEN='${AWS_SESSION_TOKEN}'"
