@@ -18,7 +18,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::992382681349:role/OIDC
+          role-to-assume: arn:aws:iam::306442480424:role/e2esa-aws-terraform-github-oidc
           aws-region: us-east-1
 
       - name: Show caller identity
