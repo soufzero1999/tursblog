@@ -19,7 +19,7 @@ jobs:
         id: aws_creds
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::264319671630:role/GitHubSamplesActionsOidc
+          role-to-assume: arn:aws:iam::992382547812:role/GithubActionRole
           aws-region: us-east-2
 
       - name: Show caller identity
