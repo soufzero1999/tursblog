@@ -19,7 +19,7 @@ jobs:
         id: aws_creds
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::867286930927:role/BlueprintsCodeBuildRole
+          role-to-assume: arn:aws:iam::751999266872:role/GitHubNodejs
           aws-region: us-east-2
 
       - name: Show caller identity
